@@ -56,6 +56,15 @@ exports.loginsubmit = async function (req, res, next) {
     var userName = req.body.name;
     var passWord = req.body.password;
     var autoLogin = req.body.autoLogin;
+    var codeImg = req.body.code;
+    logger.debug(codeImg);
+
+    if(codeImg != req.session.captcha){
+        res.render('login', {
+            'message': '验证码出错！',
+        });
+        return;
+    }
 
     // md5加密password
     var psw = util.md5(passWord);

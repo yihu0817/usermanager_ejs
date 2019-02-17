@@ -51,7 +51,12 @@
                                 </div>
                             </div>
 
-                            
+                            <div class="form-group">
+                                <div class="field field-icon-right">
+                                    <input type="text" class="input input-big" name="code" placeholder="请输入验证码"/>
+                                    <img id="codeImg" src="">
+                                </div>
+                            </div>
                
                             <div class="form-group">
                                 <div class="field field-icon-right">
@@ -72,7 +77,14 @@
         </div>
     </div>
     <script>
-      
+        $("#codeImg").bind("click",function(){
+            $("#codeImg").attr("src",changeCode);
+        });
+
+        changeCode();
+        function changeCode(){
+            $("#codeImg").attr("src","/codeImg.do?"+Math.random());
+        }
   
     </script>
 </body>

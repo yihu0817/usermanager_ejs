@@ -30,5 +30,21 @@ indexRouter.get('/main.do', control.main);
  */
 indexRouter.get('/logout.do', control.logout);
 
+/**
+ * 验证码
+ */
+indexRouter.get('/codeImg.do', function(req,res,next){
+    var codeConfig = {
+        size: 5,// 验证码长度
+        ignoreChars: '0o1i', // 验证码字符中排除 0o1i
+        noise: 2, // 干扰线条的数量
+        height: 44 
+    }
+    var captcha = svgCaptcha.create(codeConfig);
+    req.session.captcha = captcha.text.toLowerCase(); //存session用于验证接口获取文字码
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.write(String(captcha.data));
+    res.end();
+});
 
 module.exports = indexRouter;
