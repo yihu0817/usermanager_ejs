@@ -22,6 +22,7 @@
  */
 var userRouter = require('./routes/userRoute');
 var indexRouter = require('./routes/indexRoute');
+var apiRouter = require('./routes/api');
 var express = require('express');
 var ejs = require('ejs');
 var bodyParser = require('body-parser');
@@ -34,6 +35,15 @@ var log4jsConfig = require('./config/log4jsConfig.json');
 
 // 创建一个express实例instance,得到Application对象
 var app = express();
+
+// 解决跨域问题
+app.all('/*', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', ' * ');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-MethodS', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,username');
+    next();
+});
 
 // ==========1 设置默认模板引擎是html===========
 app.engine('.html', ejs.__express);
@@ -69,6 +79,7 @@ app.use(session({ // 这里的name值得是cookie的name，默认cookie的name�
 
 app.use(flash()); // 参数传递
 
+app.use('/', apiRouter);
 app.use('/', indexRouter);
 app.use('/', userRouter); // use 加载 usreRouter
 

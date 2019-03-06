@@ -5,7 +5,7 @@ var logger = require('log4js').getLogger('dev'); // 获取日志对象
  * 统一登录认证-拦截器
  */
 
-exports.all = function (req, res, next) {
+exports.all = (req, res, next) => {
     var reqUrl = req.url + ''; // 对象转字符串   /user/list/main.do?username=admin
     if (reqUrl.indexOf('?') !== -1) { // 判断reqUrl有没有?,如果没有返回-1
         reqUrl = reqUrl.substring(0, reqUrl.lastIndexOf('?')); // /user/list/main.do
@@ -28,7 +28,7 @@ exports.all = function (req, res, next) {
  * 登录界面
  */
 
-exports.login = function (req, res) {
+exports.login = (req, res) => {
     var msg = req.flash('msg');
     // console.log('msg :' + msg);
     // logger.debug('msg :' + msg);
@@ -52,19 +52,19 @@ exports.login = function (req, res) {
  * 登录提交
  */
 
-exports.loginsubmit = async function (req, res, next) {
+exports.loginsubmit = async (req, res, next) => {
     var userName = req.body.name;
     var passWord = req.body.password;
     var autoLogin = req.body.autoLogin;
     var codeImg = req.body.code;
     logger.debug(codeImg);
 
-    if(codeImg != req.session.captcha){
-        res.render('login', {
-            'message': '验证码出错！',
-        });
-        return;
-    }
+    // if (codeImg !== req.session.captcha) {
+    //     res.render('login', {
+    //         'message': '验证码出错！',
+    //     });
+    //     return;
+    // }
 
     // md5加密password
     var psw = util.md5(passWord);
@@ -116,7 +116,7 @@ exports.loginsubmit = async function (req, res, next) {
  * 主界面
  */
 
-exports.main = function (req, res, next) {
+exports.main = (req, res, next) => {
     logger.info('进入主界面成功!');
 
     res.render('index', {
@@ -131,7 +131,7 @@ exports.main = function (req, res, next) {
  * 退出
  */
 
-exports.logout = function (req, res, next) {
+exports.logout = (req, res, next) => {
     req.session.destroy(); // 销毁session
     res.redirect('/');
 };
